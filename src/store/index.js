@@ -20,20 +20,23 @@ export default new Vuex.Store({
     storeCategories(state, categories){
       state.categories = categories
     },
-    storeQuiz(state, quizzes){
+    storeQuizCategory(state, quizzes){
       quizzes.forEach(quiz => {
         if(!state.quizzes[quiz.id]){
           state.quizList.push(quiz)
           Vue.set(state.quizzes, quiz.id, quiz)
         }
       });
+    },
+    storeQuestions(state, questions){
+      state.quizzes[questions[0].QuizId]['questions'] = questions
     }
   },
   actions: {
     getQuizzes({commit},catId){
       API.getQuizzes(catId)
       .then(res => {
-        commit('storeQuiz', res.data)
+        commit('storeQuizCategory', res.data)
       })
       
     },
@@ -56,11 +59,24 @@ export default new Vuex.Store({
       .then(data => {
         commit('storeCategories', data)
       })
+    }, 
+    getQuizQuestions({commit}, id){
+      API.getQuizQuestions(id)
+      .then(res => commit('storeQuestions', res.data))
     }
   },
   getters: {
     musicCategory(state){
       return state.quizList.filter(quiz => quiz.CategoryId == 1)
-    }
+    },
+    natureCategory(state){
+      return state.quizList.filter(quiz => quiz.CategoryId == 2)
+    },
+    movieCategory(state){
+      return state.quizList.filter(quiz => quiz.CategoryId == 3)
+    },
+    mixCategory(state){
+      return state.quizList.filter(quiz => quiz.CategoryId == 4)
+    }, 
   }
 })

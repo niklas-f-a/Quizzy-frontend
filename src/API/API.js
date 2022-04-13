@@ -51,3 +51,14 @@ export function getQuizzes(catId){
   })
   .then(res => res.json())
 }
+
+export function getQuizQuestions(id){
+  return fetch(BASE_URL+'/quizzes/'+id, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+token
+    }
+  })
+  .then(res => res.json())
+}

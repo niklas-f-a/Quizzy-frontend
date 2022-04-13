@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
 import Categories from '../views/Categories.vue'
 import QuizView from '../views/QuizView.vue'
+import Quiz from '../views/Quiz.vue'
 import store from '@/store'
 
 Vue.use(VueRouter)
@@ -22,6 +23,11 @@ const routes = [
     path: '/categories/:catId',
     name: 'Quizzes',
     component: QuizView
+  }, 
+  {
+    path: '/quiz/:id',
+    name: 'Quiz',
+    component: Quiz
   }
 ]
 
