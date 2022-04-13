@@ -5,7 +5,7 @@
       <article v-for="cat in categories" :key="cat.id"
         :class="{green: cat.name == 'nature', blue: cat.name == 'music',
           red: cat.name == 'movie', yellow: cat.name == 'mix'}"
-        @click="$router.push('/categories/'+cat.name)"
+        @click="$router.push({path: '/categories/'+cat.id, query:{name: cat.name}})"
       >
         <h3>{{cat.name}}</h3>
       </article>

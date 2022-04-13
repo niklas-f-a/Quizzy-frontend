@@ -7,9 +7,11 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     user: {
-      authenticated: true
+      authenticated: false
     }, 
-    categories: []
+    categories: [],
+    quizzes: {},
+    quizList: []
   },
   mutations: {
     registerAuth(state, auth){
@@ -17,20 +19,35 @@ export default new Vuex.Store({
     }, 
     storeCategories(state, categories){
       state.categories = categories
+    },
+    storeQuiz(state, quizzes){
+      quizzes.forEach(quiz => {
+        if(!state.quizzes[quiz.id]){
+          state.quizList.push(quiz)
+          Vue.set(state.quizzes, quiz.id, quiz)
+        }
+      });
     }
   },
   actions: {
+    getQuizzes({commit},catId){
+      API.getQuizzes(catId)
+      .then(res => {
+        commit('storeQuiz', res.data)
+      })
+      
+    },
     registerUser({commit}, credentials){
       API.registerUser(credentials)
-      .then(() => {
+      .then(data => {
         commit('registerAuth', true)
-        // API.storeToken(data.token)
+        API.storeToken(data.token)
       })
     },
     login({commit}, credentials){
       API.login(credentials)
-      .then((res) => {
-        console.log(res);
+      .then((data) => {
+        API.storeToken(data.token)
         commit('registerAuth', true)
       })
     },
@@ -41,6 +58,9 @@ export default new Vuex.Store({
       })
     }
   },
-  modules: {
+  getters: {
+    musicCategory(state){
+      return state.quizList.filter(quiz => quiz.CategoryId == 1)
+    }
   }
 })

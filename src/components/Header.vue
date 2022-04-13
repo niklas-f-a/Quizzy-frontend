@@ -1,5 +1,6 @@
 <template>
-  <header>
+  <header :class="{green: cat == 'nature', blue: cat == 'music',
+    red: cat == 'movie', yellow: cat == 'mix'}">
     <h1>QUIZZY</h1>
     <nav>
       <router-link to="/categories">quizzes</router-link>
@@ -10,7 +11,9 @@
 
 <script>
 export default {
-
+  props: {
+    cat: String
+  }
 }
 </script>
 
@@ -35,5 +38,17 @@ header{
   a:last-Child{
     margin-right: 5rem;
   }
+}
+header.green{
+  background-color: $green;
+}
+header.yellow{
+  background-color: $yellow;
+}
+header.blue{
+  background-color: $blue;
+}
+header.red{
+  background-color: $red;
 }
 </style>

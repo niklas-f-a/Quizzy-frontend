@@ -19,7 +19,7 @@ const routes = [
     component: Categories,
   },
   {
-    path: '/categories/:quizzes',
+    path: '/categories/:catId',
     name: 'Quizzes',
     component: QuizView
   }
