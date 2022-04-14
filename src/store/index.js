@@ -49,6 +49,11 @@ export default new Vuex.Store({
     storeUserQuiz(state, quizzes){
       console.log(quizzes);
       state.user.quiz = quizzes
+    },
+    logOut(state){
+      state.user.info = {}
+      state.user.quiz = []
+      state.user.authenticated = false
     }
   },
   actions: {
@@ -119,6 +124,11 @@ export default new Vuex.Store({
       .then(() => API.getMyQuizzes(state.user.info.id))
       .then(res => commit('storeUserQuiz', res.data))
     },
+    logOut({commit}){
+      API.clearHeader()
+      commit('logOut')
+      router.push('/')
+    }
   },
   getters: {
     musicCategory(state){

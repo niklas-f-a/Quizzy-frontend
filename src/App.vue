@@ -31,6 +31,9 @@ html, body, h1, h2{
  }
  a{
    text-decoration: none;
+   &:hover{
+     cursor: pointer;
+   }
  }
  button{
    background-color: $primary;

@@ -3,8 +3,8 @@
     <div class="container">
       <h1>QUIZZY</h1>
       <span>
-        <p @click="toggleShowLogin">login</p>
-        <p @click="toggleShowSignup">signup</p>
+        <a @click="toggleShowLogin">login</a>
+        <a @click="toggleShowSignup">signup</a>
       </span>
       <span>
         <div class="login-form" :class="{open: showLogin}">
@@ -111,7 +111,7 @@ export default {
       span{
         display: flex;
         justify-content: center;
-        p{
+        a{
           margin: 0 2rem;
           &:hover{
             cursor: pointer;

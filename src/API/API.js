@@ -1,7 +1,10 @@
 const BASE_URL = 'http://localhost:5001/api'
 
-let myHeaders
+let myHeaders = {}
 
+export function clearHeader(){
+  myHeaders = {}
+}
 
 export function storeToken(newToken){
   myHeaders = {

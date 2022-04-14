@@ -40,8 +40,7 @@ const routes = [
     beforeEnter: (to, from, next) => {
       if(store.state.errorMessage){
         next(false)
-      }
-      else{
+      }else{
         next()
       }
     }
@@ -57,8 +56,7 @@ const router = new VueRouter({
 router.beforeEach(async (to, from, next) => {
   if(!store.state.user.authenticated && to.name !== 'Login'){
     next({name: 'Login'})
-  }
-  else{
+  }else{
     next()
   }
 })
