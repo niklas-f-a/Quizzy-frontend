@@ -1,10 +1,17 @@
 <template>
-  <h1>hallå från update</h1>
+  <section>
+    <article v-for="quiz in quizzes" :key="quiz.id">
+      <h3>{{quiz.name}}</h3>
+      {{quiz}}
+    </article>
+  </section>
 </template>
 
 <script>
 export default {
-
+  props: {
+    quizzes: Array
+  }
 }
 </script>
 

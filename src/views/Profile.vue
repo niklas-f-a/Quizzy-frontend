@@ -5,10 +5,8 @@
     <a @click="view = 'createQuiz'">create Quiz</a>
     <a @click="view = 'updateQuiz'">update Quiz</a>
   </nav>
-  <section class="edit-quiz">
-    <CreateQuiz v-if="view == 'createQuiz'" />
-    <UpdateQuiz v-if="view == 'updateQuiz'"/>
-  </section>
+  <CreateQuiz v-if="view == 'createQuiz'" />
+  <UpdateQuiz :quizzes="userQuizzes" v-if="view == 'updateQuiz'"/>
 </main>
 </template>
 
@@ -23,7 +21,12 @@ export default {
   }, 
   data(){return{
     view: 'createQuiz'
-  }}
+  }},
+  computed: {
+    userQuizzes(){
+      return this.$store.state.user.quiz
+    }
+  }
 
 }
 </script>
@@ -36,9 +39,5 @@ nav{
   a{
     margin: 1rem;
   }
-}
-.edit-quiz{
-  display: grid;
-  place-items: center;
 }
 </style>
