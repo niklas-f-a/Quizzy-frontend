@@ -1,10 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '@/store'
+
 import Login from '../views/Login.vue'
 import Categories from '../views/Categories.vue'
 import QuizView from '../views/QuizView.vue'
 import Quiz from '../views/Quiz.vue'
-import store from '@/store'
+import Profile from '../views/Profile.vue'
+
 
 
 Vue.use(VueRouter)
@@ -25,6 +28,11 @@ const routes = [
     name: 'Quizzes',
     component: QuizView
   }, 
+  {
+    path: '/profile', 
+    name: 'Profile',
+    component: Profile,
+  },
   {
     path: '/quiz/:id',
     name: 'Quiz',

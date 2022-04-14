@@ -1,8 +1,13 @@
 const BASE_URL = 'http://localhost:5001/api'
-let token = ''
+
+let myHeaders
+
 
 export function storeToken(newToken){
-  token = newToken
+  myHeaders = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer '+newToken
+  }
 }
 
 export function registerUser(credentials){
@@ -52,10 +57,7 @@ export function getCategories(){
 export function getQuizzes(catId){
   return fetch(BASE_URL+'/quizzes/categories/'+catId, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer '+token
-    }
+    headers: myHeaders
   })
   .then(res => res.json())
 }
@@ -63,10 +65,7 @@ export function getQuizzes(catId){
 export function getQuizQuestions(id){
   return fetch(BASE_URL+'/quizzes/'+id, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer '+token
-    }
+    headers: myHeaders
   })
   .then(res => res.json())
 }
@@ -74,10 +73,7 @@ export function getQuizQuestions(id){
 export function hasUserTakenQuiz(id){
   return fetch(BASE_URL+'/quizzes/taken/'+id, {
     method: 'GET', 
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer '+token
-    }
+    headers: myHeaders
   })
   .then(res => {
     res.json()
@@ -93,10 +89,23 @@ export function hasUserTakenQuiz(id){
 export function sendScore({score, quizId}){
   fetch(BASE_URL+'/quizzes/result/'+quizId, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer '+token
-    },
+    headers: myHeaders,
     body: JSON.stringify({ 'score': score })
   })
+}
+
+export function getMe(){
+  return fetch(BASE_URL+'/users/me', {
+    method: 'GET', 
+    headers: myHeaders
+  })
+  .then(res => res.json())
+}
+
+export function getMyQuizzes(id){
+  return fetch(BASE_URL+'/quizzes/users/'+id, {
+    method: 'GET',
+    headers: myHeaders
+  })
+  .then(res => res.json())
 }

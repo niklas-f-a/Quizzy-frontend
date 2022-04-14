@@ -8,6 +8,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     user: {
+      info: {},
+      quiz: [],
       authenticated: false, 
     }, 
     categories: [],
@@ -41,6 +43,13 @@ export default new Vuex.Store({
       state.quizzes[questions[0].QuizId]['questions'] = questions
       state.quizLoading = false
     }, 
+    storeUser(state, user){
+      state.user.info = user
+    },
+    storeUserQuiz(state, quizzes){
+      console.log(quizzes);
+      state.user.quiz = quizzes
+    }
   },
   actions: {
     sendScore(_, payload){
@@ -103,7 +112,13 @@ export default new Vuex.Store({
       state.quizLoading = true
       API.getQuizQuestions(id)
       .then(res => commit('storeQuestions', res.data))
-    }
+    }, 
+    getMe({state, commit}){
+      API.getMe()
+      .then(res => commit('storeUser', res.data))
+      .then(() => API.getMyQuizzes(state.user.info.id))
+      .then(res => commit('storeUserQuiz', res.data))
+    },
   },
   getters: {
     musicCategory(state){
