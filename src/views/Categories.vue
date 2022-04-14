@@ -1,15 +1,17 @@
 <template>
   <main>
     <Header />
-    <section class="categories">
-      <article v-for="cat in categories" :key="cat.id"
-        :class="{green: cat.name == 'nature', blue: cat.name == 'music',
-          red: cat.name == 'movie', yellow: cat.name == 'mix'}"
-        @click="$router.push({path: '/categories/'+cat.id, query:{name: cat.name}})"
-      >
-        <h3>{{cat.name}}</h3>
-      </article>
-    </section>
+    <div class="container">
+      <section class="categories">
+        <article v-for="cat in categories" :key="cat.id"
+          :class="{green: cat.name == 'nature', blue: cat.name == 'music',
+            red: cat.name == 'movie', yellow: cat.name == 'mix'}"
+          @click="$router.push({path: '/categories/'+cat.id, query:{name: cat.name}})"
+        >
+          <h3>{{cat.name}}</h3>
+        </article>
+      </section>
+    </div>
   </main>
 </template>
 
@@ -30,7 +32,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/styles/fonts-colours.scss';
-main{
+.container{
   display: flex;
   flex-direction: column;
   justify-content: center;

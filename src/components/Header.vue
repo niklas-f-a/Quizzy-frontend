@@ -1,7 +1,7 @@
 <template>
   <header :class="{green: cat == 'nature', blue: cat == 'music',
     red: cat == 'movie', yellow: cat == 'mix'}">
-    <h1>QUIZZY</h1>
+    <h1 @click="$router.push('/categories')">QUIZZY</h1>
     <nav>
       <router-link to="/categories">quizzes</router-link>
       <router-link to="/profile">profile</router-link>
@@ -20,7 +20,7 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/styles/fonts-colours.scss';
 header{
-  width: 100%;
+  // width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -30,6 +30,9 @@ header{
   h1{
     font-size: 3rem;
     margin: 5rem;
+    &:hover{
+      cursor: pointer;
+    }
   }
   a{
     margin: 2rem;

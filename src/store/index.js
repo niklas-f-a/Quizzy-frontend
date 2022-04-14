@@ -70,15 +70,12 @@ export default new Vuex.Store({
     registerUser({commit}, credentials){
       API.registerUser(credentials)
       .then(data => {
-        console.log(data);
         commit('registerAuth', true)
         API.storeToken(data.token)
-      })
-      .then(() => {
         router.push('/categories')
-      })
+      }) 
       .catch(error => {
-        console.log(error);
+        commit('setError', error.message)
       })
     },
     login({commit}, credentials){

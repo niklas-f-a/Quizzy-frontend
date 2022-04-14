@@ -14,7 +14,11 @@ export function registerUser(credentials){
     body: JSON.stringify(credentials)
   })
   .then(res => {
-    return res.json()
+    if(res.ok == false){
+      throw new Error('User Alredy exists')
+    }else{
+      return res.json()
+    }
   })
 }
 
@@ -29,8 +33,7 @@ export function login(credentials){
   .then(res => {
     if(res.status != 200){
       return {error: res.statusText}
-    }
-    else{
+    }else{
       return res.json()
     }
   })
@@ -88,7 +91,6 @@ export function hasUserTakenQuiz(id){
 }
 
 export function sendScore({score, quizId}){
-  console.log(score, quizId);
   fetch(BASE_URL+'/quizzes/result/'+quizId, {
     method: 'POST',
     headers: {
@@ -97,5 +99,4 @@ export function sendScore({score, quizId}){
     },
     body: JSON.stringify({ 'score': score })
   })
-  .then(res => console.log(res))
 }
