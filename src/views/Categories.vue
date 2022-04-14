@@ -24,7 +24,7 @@ export default {
     categories(){
       return this.$store.state.categories
     }
-  }
+  }, 
 }
 </script>
 

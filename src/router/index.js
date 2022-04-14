@@ -6,6 +6,7 @@ import QuizView from '../views/QuizView.vue'
 import Quiz from '../views/Quiz.vue'
 import store from '@/store'
 
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -27,7 +28,15 @@ const routes = [
   {
     path: '/quiz/:id',
     name: 'Quiz',
-    component: Quiz
+    component: Quiz, 
+    beforeEnter: (to, from, next) => {
+      if(store.state.errorMessage){
+        next(false)
+      }
+      else{
+        next()
+      }
+    }
   }
 ]
 

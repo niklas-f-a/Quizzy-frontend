@@ -67,7 +67,6 @@ export default {
     async login(){
       this.trimIt()
       await this.$store.dispatch('login', {email: this.email, password: this.password})
-      setTimeout(() => this.$router.push('/categories'), 300)
     },
     async signUp(){
       this.trimIt()
@@ -88,9 +87,6 @@ export default {
       }
       if(!this.error.signUpPassword.length && !this.error.signUpEmail.length){
         await this.$store.dispatch('registerUser', {email: this.email, password: this.password})
-      }
-      if(this.$store.state.user){
-        setTimeout(() => this.$router.push('/categories'), 300)
       }
     }
   }

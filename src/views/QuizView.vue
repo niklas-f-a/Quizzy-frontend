@@ -5,7 +5,7 @@
       <article v-for="quiz in quizzes" :key="quiz.id"
         :class="{green: $route.query.name == 'nature', blue: $route.query.name == 'music',
           red: $route.query.name == 'movie', yellow: $route.query.name == 'mix'}"
-        @click="$router.push({path:'/quiz/'+quiz.id, query: {name: $route.query.name}})"
+        @click="hasUserTakenQuiz(quiz.id, $route.query.name)"
       >
         <figure>
           <img :src="`http://localhost:5001/images/${quiz.imgFile}`">
@@ -42,6 +42,11 @@ export default {
       }
    
       else return null
+    }
+  },
+  methods: {
+    async hasUserTakenQuiz(id, categoryName){
+      await this.$store.dispatch('hasUserTakenQuiz', {id, categoryName})
     }
   }
 }

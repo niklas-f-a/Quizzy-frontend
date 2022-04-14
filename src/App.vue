@@ -1,8 +1,18 @@
 <template>
   <div id="app">
     <router-view/>
+    <ErrorModal/>
+    <FadeLayer/>
   </div>
 </template>
+
+<script>
+import ErrorModal from '@/components/ErrorModal';
+import FadeLayer from '@/components/FadeLayer';
+export default {
+  components: {ErrorModal, FadeLayer}
+}
+</script>
 
 <style lang="scss">
 @import './assets/styles/fonts-colours.scss';

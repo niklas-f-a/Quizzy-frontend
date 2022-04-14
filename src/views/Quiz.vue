@@ -31,6 +31,7 @@
       <article v-if="done">
         <h2>Good Job</h2>
         <p>Youre final score is {{score}}points</p>
+        <button @click="$router.push('/categories')">OK</button>
       </article>
     </div>
   </section>
@@ -43,18 +44,18 @@ export default {
   components: {Header},
   data(){return{
     questionIteration: 0,
-    loading: true, 
     picked: Boolean, 
     guessing: true,
     score: 0,
     isRight: false,
-    done: false
+    done: false, 
+    quizId: this.$route.params.id,
   }},
+  beforeDestroy(){
+    this.$store.dispatch('sendScore', {score: this.score, quizId: this.quizId})
+  },
   async mounted(){
     await this.$store.dispatch('getQuizQuestions', this.$route.params.id)
-    setTimeout(() => {
-      this.loading = false
-    }, 300)
   },
   methods: {
     nextQuestion(){
@@ -76,6 +77,9 @@ export default {
     }
   },
   computed: {
+    loading(){
+      return this.$store.state.quizLoading
+    },
     quiz(){
       return this.$store.state.quizzes[this.$route.params.id]
     }, 

@@ -27,7 +27,12 @@ export function login(credentials){
     body: JSON.stringify(credentials)
   })
   .then(res => {
-    return res.json()
+    if(res.status != 200){
+      return {error: res.statusText}
+    }
+    else{
+      return res.json()
+    }
   })
 }
 
@@ -61,4 +66,36 @@ export function getQuizQuestions(id){
     }
   })
   .then(res => res.json())
+}
+
+export function hasUserTakenQuiz(id){
+  return fetch(BASE_URL+'/quizzes/taken/'+id, {
+    method: 'GET', 
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+token
+    }
+  })
+  .then(res => {
+    res.json()
+    if(res.status != 200){
+      return true
+    }
+    else {
+      return false
+    }
+  })
+}
+
+export function sendScore({score, quizId}){
+  console.log(score, quizId);
+  fetch(BASE_URL+'/quizzes/result/'+quizId, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+token
+    },
+    body: JSON.stringify({ 'score': score })
+  })
+  .then(res => console.log(res))
 }

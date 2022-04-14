@@ -1,19 +1,28 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import * as API from '@/API/API.js'
+import router from '@/router'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
     user: {
-      authenticated: false
+      authenticated: false, 
     }, 
     categories: [],
     quizzes: {},
-    quizList: []
+    quizList: [], 
+    errorMessage: '', 
+    quizLoading: false
   },
   mutations: {
+    removeErrorMessage(state){
+      state.errorMessage = ''
+    },
+    setError(state, errorMessage){
+      state.errorMessage = errorMessage
+    },
     registerAuth(state, auth){
       state.user.authenticated = auth
     }, 
@@ -30,9 +39,27 @@ export default new Vuex.Store({
     },
     storeQuestions(state, questions){
       state.quizzes[questions[0].QuizId]['questions'] = questions
-    }
+      state.quizLoading = false
+    }, 
   },
   actions: {
+    sendScore(_, payload){
+      API.sendScore(payload)
+    },
+    hasUserTakenQuiz({commit}, {id, categoryName}){
+      API.hasUserTakenQuiz(id)
+      .then(data => {
+        if(data == true){
+          commit('setError', 'You have already taken this quiz')
+        }
+        else{
+          router.push({path:'/quiz/'+id, query: {name: categoryName}})
+        }
+      })
+    },
+    removeErrorMessage({commit}){
+      commit('removeErrorMessage')
+    },
     getQuizzes({commit},catId){
       API.getQuizzes(catId)
       .then(res => {
@@ -43,15 +70,30 @@ export default new Vuex.Store({
     registerUser({commit}, credentials){
       API.registerUser(credentials)
       .then(data => {
+        console.log(data);
         commit('registerAuth', true)
         API.storeToken(data.token)
+      })
+      .then(() => {
+        router.push('/categories')
+      })
+      .catch(error => {
+        console.log(error);
       })
     },
     login({commit}, credentials){
       API.login(credentials)
       .then((data) => {
-        API.storeToken(data.token)
-        commit('registerAuth', true)
+        if(data.error){
+          commit('setError', data.error)
+        }
+        else{
+          API.storeToken(data.token)
+          commit('registerAuth', true)
+        }
+      })
+      .then(() => {
+        router.push('/categories')
       })
     },
     getCategories({commit}){
@@ -60,7 +102,8 @@ export default new Vuex.Store({
         commit('storeCategories', data)
       })
     }, 
-    getQuizQuestions({commit}, id){
+    getQuizQuestions({commit, state}, id){
+      state.quizLoading = true
       API.getQuizQuestions(id)
       .then(res => commit('storeQuestions', res.data))
     }
