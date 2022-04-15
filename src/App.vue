@@ -16,6 +16,9 @@ export default {
 
 <style lang="scss">
 @import './assets/styles/fonts-colours.scss';
+*{
+  box-sizing: border-box;
+}
 html, body, h1, h2{
   margin: 0;
   padding: 0;
@@ -35,7 +38,7 @@ html, body, h1, h2{
      cursor: pointer;
    }
  }
- button{
+ .regular-button{
    background-color: $primary;
    border: 1px solid $primary;
    border-radius: 10px;

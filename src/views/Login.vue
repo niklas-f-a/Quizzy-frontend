@@ -14,7 +14,7 @@
             <input v-model="email" type="email" name="email" required>
             <label for="password">Password</label>
             <input v-model="password" type="password" name="password" required>
-            <button>login</button>
+            <button class="regular-button">login</button>
           </form>
         </div>
         <div class="signup-form" :class="{open: showSignup}">
@@ -28,7 +28,7 @@
             <label for="repeat-password">Repeat Password</label>
             <input :class="{error: error.signUpPassword}" v-model="repeatPassword" type="password" name="repeat-password">
             <small class="error">{{error.signUpPassword}}</small>
-            <button>signup</button>
+            <button class="regular-button">signup</button>
           </form>
         </div>
       </span>
@@ -76,13 +76,13 @@ export default {
       else{
         this.error.signUpEmail = ''
       }
-      if(this.password < this.minPasswordLength){
+      if(this.password.length < this.minPasswordLength){
         this.error.signUpPassword = 'Password needs to be at least 6 characters'
       }
-      else if(this.password != this.repeatPassword){
+      if(this.password != this.repeatPassword){
         this.error.signUpPassword = 'Passwords needs to match'
       }
-      else{
+      else if(this.password.length >= this.minPasswordLength && this.password == this.repeatPassword){
         this.error.signUpPassword = ''
       }
       if(!this.error.signUpPassword.length && !this.error.signUpEmail.length){

@@ -14,7 +14,7 @@
           <input v-model="picked" type="radio" :id="answer" name="answer" :value="answer">
           <label :for="answer">{{answer}}</label>
         </ul>
-        <button @click="guess">Guess</button>
+        <button class="regular-button" @click="guess">Guess</button>
       </article>
       <article v-else-if="!guessing && !done">
         <h2>{{quiz.name}}</h2>
@@ -26,12 +26,12 @@
         <h3 v-else>Sorry</h3>
         <p>The right answer is {{question.rightAnswer}}</p>
         <h4>Youre score is now {{score}}</h4>
-        <button @click="nextQuestion">Next</button>
+        <button class="regular-button" @click="nextQuestion">Next</button>
       </article>
       <article v-if="done">
         <h2>Good Job</h2>
         <p>Youre final score is {{score}}points</p>
-        <button @click="$router.push('/categories')">OK</button>
+        <button class="regular-button" @click="$router.push('/categories')">OK</button>
       </article>
     </div>
   </section>
