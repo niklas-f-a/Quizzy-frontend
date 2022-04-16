@@ -13,6 +13,35 @@ export function storeToken(newToken){
   }
 }
 
+export async function sendQuiz({quizInfo, quizImage, quizQuestions}){
+  const quiz = await sendQuizInfo(quizInfo)
+  if(quiz.error){
+    return quiz
+  }
+  //   sendQuizImage(quizImage)
+  //   sendQuizQuestions(quizQuestions)
+  
+  // .then(values => console.log(values))
+  console.log(quizImage, quizQuestions);
+}
+
+// function sendQuizQuestions(quizQuestions){
+//   console.log(quizQuestions);
+// }
+
+function sendQuizInfo(quizInfo){
+  return fetch(BASE_URL+'/quizzes', {
+    method: 'POST',
+    headers: myHeaders, 
+    body: JSON.stringify(quizInfo)
+  })
+  .then(res => res.json())
+}
+
+// function sendQuizImage(quizImage){
+//   console.log(quizImage);
+// }
+
 export function registerUser(credentials){
   return fetch(BASE_URL+'/users/register', {
     method: 'POST',

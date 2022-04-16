@@ -19,8 +19,8 @@ export default {
 .error-modal{
   position: absolute;
   top: 10rem;
-  right: 100%;
   left: 50%;
+  margin-left: -7.5rem;
   width: 15rem;
   padding: 1rem;
   background-color: #ffffff;

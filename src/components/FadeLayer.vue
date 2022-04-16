@@ -1,9 +1,10 @@
 <template>
-  <div v-if="error" class="fade-layer"></div>
+  <div v-if="error || modal" class="fade-layer"></div>
 </template>
 
 <script>
 export default {
+  props: ['modal'],
   computed: {
     error(){
       return this.$store.state.errorMessage

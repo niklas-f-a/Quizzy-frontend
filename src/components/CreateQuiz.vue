@@ -25,6 +25,7 @@
   </section>
   <section v-else-if="!done">
     <form @submit.prevent="addQuestion">
+      <a @click="quizRequirements = false">&lt;</a>
       <h2>Add question to {{quizName}}</h2>
       <div>
         <label for="question">Question</label>
@@ -49,27 +50,39 @@
         <small class="error">{{error.answer}}</small>
       </div>
       <span>
-        <button class="regular-button">Add</button>
-        <button class="done">Done</button>
+        <button class="regular-button">Add qustion</button>
+        <button @click.prevent="doubleCheckDone = true" class="done">Done</button>
       </span>
     </form>
+    <dialog open v-if="doubleCheckDone">
+      <p>Are you sure?</p>
+      <button @click="doubleCheckDone = false" class="regular-button">No go back</button>
+      <button @click="sendQuiz" class="done">Add quiz!</button>
+    </dialog>
+    <FadeLayer v-if="doubleCheckDone" modal='true'/>
   </section>
   <section v-else>
-    <h2>good job</h2>
-    <button>Go to quizzes</button>
+    <article class="done-section">
+      <h2>Good job!</h2>
+      <p>You're quiz has been added</p>
+      <button @click="$router.push('/categories')" class="regular-button">Go to quizzes</button>
+    </article>
   </section>
 </template>
 
 <script>
-export default {//flytta done knapp till egen modal efter addera fråga
+import FadeLayer from "./FadeLayer.vue";
+export default {
+  components: {FadeLayer},
   data(){return{
     category: 1, 
-    quizName: "la bamba", 
+    quizName: "", 
     quizInfo: {}, 
     quizImage: FormData, 
     requiredQuizNameLength: 3,
-    quizRequirements: true,
+    quizRequirements: false,
     quizQuestions: [],
+    doubleCheckDone: false,
     done: false,
     question: {
       question: '',
@@ -86,6 +99,10 @@ export default {//flytta done knapp till egen modal efter addera fråga
     }
   }},
   methods: {
+    async sendQuiz(){
+      this.doubleCheckDone = false
+      await this.$store.dispatch('sendQuiz', {quizInfo: this.quizInfo, quizImage: this.quizImage, quizQuestions: this.quizQuestions})
+    },
     clearFields(){
       this.question.question = ''
       this.question.rightAnswer = ''
@@ -136,6 +153,9 @@ export default {//flytta done knapp till egen modal efter addera fråga
   computed: {
     categories(){
       return this.$store.state.categories
+    }, 
+    loading(){
+      return this.$store.state.quizLoading
     }
   }
 }
@@ -155,12 +175,19 @@ section{
   form{
     margin-top: 2rem;
     width: 50%;
-    padding: 2rem 0;
+    padding: 4rem 0;
     border: 1px solid #000000;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
+    a{
+      position: absolute;
+      left: 25px;
+      top: 15px;
+      font-size: 2rem;
+    }
     div{
       display: flex;
       flex-direction: column;
@@ -176,18 +203,36 @@ section{
     button{
       margin: 2rem 2rem 0 2rem;
     }
-    .done{
+  }
+}
+.done{
       background-color: green;
       color: white;
       border: none;
       border-radius: 10px;
       padding: .5rem 1.5rem;
       font-size: .8rem;
+      transition: filter .5s;
       &:hover{
       cursor: pointer;
-      background-color: transparent;
+      filter: brightness(150%);
       }
     }
+.done-section{
+  display: flex;
+  flex-direction: column;
+  margin-top: 3rem;
+}
+dialog{
+  z-index: 5;
+  padding: 1rem;
+  border: 1px solid #000000;
+  border-radius: 10px;
+  p{
+    margin-left: 1rem;
+  }
+  button{
+    margin: 1rem;
   }
 }
 </style>
