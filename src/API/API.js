@@ -14,15 +14,14 @@ export function storeToken(newToken){
 }
 
 export async function sendQuiz({quizInfo, quizImage, quizQuestions}){
-  const quiz = await sendQuizInfo(quizInfo)
-  if(quiz.error){
-    return quiz
-  }
-  //   sendQuizImage(quizImage)
+    const quiz = await sendQuizInfo(quizInfo)
+    const answer = await sendQuizImage(quizImage)
+    console.log(answer, quiz);
+ 
   //   sendQuizQuestions(quizQuestions)
   
   // .then(values => console.log(values))
-  console.log(quizImage, quizQuestions);
+  console.log(quizQuestions);
 }
 
 // function sendQuizQuestions(quizQuestions){
@@ -38,9 +37,16 @@ function sendQuizInfo(quizInfo){
   .then(res => res.json())
 }
 
-// function sendQuizImage(quizImage){
-//   console.log(quizImage);
-// }
+function sendQuizImage(quizImage){
+  return fetch(BASE_URL+'/images/upload', {
+    method: 'POST',
+    headers: {
+      'Authorization': myHeaders['Authorization']
+    },
+    body: quizImage
+  })
+  .then(res => res.json())
+}
 
 export function registerUser(credentials){
   return fetch(BASE_URL+'/users/register', {
