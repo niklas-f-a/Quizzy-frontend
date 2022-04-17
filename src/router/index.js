@@ -16,7 +16,14 @@ const routes = [
   {
     path: '/',
     name: 'Login',
-    component: Login
+    component: Login, 
+    beforeEnter: (to, from, next) => {
+      if(store.state.user.authenticated){
+        next({name: 'Categories'})
+      }else{
+        next()
+      }
+    }
   },
   {
     path: '/categories',

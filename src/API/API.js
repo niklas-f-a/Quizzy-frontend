@@ -13,20 +13,28 @@ export function storeToken(newToken){
   }
 }
 
-export async function sendQuiz({quizInfo, quizImage, quizQuestions}){
-    const quiz = await sendQuizInfo(quizInfo)
-    const answer = await sendQuizImage(quizImage)
-    console.log(answer, quiz);
- 
-  //   sendQuizQuestions(quizQuestions)
-  
-  // .then(values => console.log(values))
-  console.log(quizQuestions);
+function addQuizId(questions, quizId){
+  return questions.map(question => {
+    question['QuizId'] = quizId
+  })
 }
 
-// function sendQuizQuestions(quizQuestions){
-//   console.log(quizQuestions);
-// }
+export async function sendQuiz({quizInfo, quizImage, quizQuestions}){
+  const quiz = await sendQuizInfo(quizInfo)
+  await sendQuizImage(quizImage) 
+  addQuizId(quizQuestions, quiz.data.id)
+  await sendQuizQuestions(quizQuestions)
+}
+
+function sendQuizQuestions(quizQuestions){
+  console.log(quizQuestions);
+  return fetch(BASE_URL+'/quizzes', {
+    method: 'PUT',
+    headers: myHeaders,
+    body: JSON.stringify(quizQuestions)
+  })
+  .then(res => res.json())
+}
 
 function sendQuizInfo(quizInfo){
   return fetch(BASE_URL+'/quizzes', {

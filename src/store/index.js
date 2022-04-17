@@ -56,15 +56,9 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    sendQuiz({state,commit}, quiz){
+    sendQuiz({state}, quiz){
       state.quizLoading = true
       API.sendQuiz(quiz)
-      .then(res => {
-        if(res.error){
-          console.log(res.error);
-          commit('setError', res.error)
-        }  
-      })
     },
     sendScore(_, payload){
       API.sendScore(payload)

@@ -50,14 +50,13 @@
         <small class="error">{{error.answer}}</small>
       </div>
       <span>
-        <button class="regular-button">Add qustion</button>
-        <button @click.prevent="doubleCheckDone = true" class="done">Done</button>
+        <button class="regular-button">Add question</button>
       </span>
     </form>
     <dialog open v-if="doubleCheckDone">
-      <p>Are you sure?</p>
-      <button @click="doubleCheckDone = false" class="regular-button">No go back</button>
-      <button @click="sendQuiz" class="done">Add quiz!</button>
+      <p>Write another question?</p>
+      <button @click="clearFields" class="regular-button">YES</button>
+      <button @click="sendQuiz" class="done">Done!</button>
     </dialog>
     <FadeLayer v-if="doubleCheckDone" modal='true'/>
   </section>
@@ -102,8 +101,10 @@ export default {
     async sendQuiz(){
       this.doubleCheckDone = false
       await this.$store.dispatch('sendQuiz', {quizInfo: this.quizInfo, quizImage: this.quizImage, quizQuestions: this.quizQuestions})
+      this.$router.push('/categories')
     },
     clearFields(){
+      this.doubleCheckDone = false
       this.question.question = ''
       this.question.rightAnswer = ''
       this.question.answer2 = ''
@@ -124,7 +125,7 @@ export default {
       }
       if(!this.error.answer.length && !this.error.question.length){
         this.quizQuestions.push(this.question)
-        this.clearFields()
+        this.doubleCheckDone = true
       }
     },
     addQuiz(){
