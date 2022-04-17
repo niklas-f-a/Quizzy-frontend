@@ -15,9 +15,13 @@ export default new Vuex.Store({
     quizzes: {},
     quizList: [], 
     errorMessage: '', 
+    message: '',
     quizLoading: false
   },
   mutations: {
+    setMessage(state, message){
+      state.message = message
+    },
     removeErrorMessage(state){
       state.errorMessage = ''
     },
@@ -31,7 +35,6 @@ export default new Vuex.Store({
       state.categories = categories
     },
     storeQuiz(state, quizzes){
-      console.log(quizzes);
       quizzes.forEach(quiz => {
         if(!state.quizzes[quiz.id]){
           state.quizList.push(quiz)
@@ -40,7 +43,6 @@ export default new Vuex.Store({
       });
     },
     storeQuestions(state, questions){
-      console.log(questions);
       state.quizzes[questions[0].QuizId]['questions'] = questions
       state.quizLoading = false
     }, 
@@ -56,7 +58,7 @@ export default new Vuex.Store({
   actions: {
     updateQuestion({commit}, question){
       API.updateQuestion(question)
-      commit
+      .then(res => commit('setMessage', res.message))
     },
     sendQuiz({state}, quiz){
       state.quizLoading = true
@@ -119,7 +121,6 @@ export default new Vuex.Store({
       })
     }, 
     getQuizQuestions({commit, state}, id){
-      console.log(id);
       state.quizLoading = true
       API.getQuizQuestions(id)
       .then(res => commit('storeQuestions', res.data))

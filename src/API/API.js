@@ -20,7 +20,12 @@ function addQuizId(questions, quizId){
 }
 
 export function updateQuestion({id, question}){
-  console.log(id, question);
+  return fetch(BASE_URL+'/quizzes/question/'+id, {
+    method: 'PATCH',
+    headers: myHeaders,
+    body: JSON.stringify(question)
+  })
+  .then(res => res.json())
 }
 
 export async function sendQuiz({quizInfo, quizImage, quizQuestions}){
@@ -31,7 +36,6 @@ export async function sendQuiz({quizInfo, quizImage, quizQuestions}){
 }
 
 function sendQuizQuestions(quizQuestions){
-  console.log(quizQuestions);
   return fetch(BASE_URL+'/quizzes', {
     method: 'PUT',
     headers: myHeaders,

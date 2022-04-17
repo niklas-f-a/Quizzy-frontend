@@ -1,6 +1,6 @@
 <template>
   <section v-if="!edit">
-    <article @click="editQuiz(quiz)" v-for="quiz in userQuizzes" :key="quiz.id">
+    <article @click="editQuiz(quiz.id)" v-for="quiz in userQuizzes" :key="quiz.id">
       <figure>
         <img :src="`http://localhost:5001/images/${quiz.imgFile}`">
       </figure>
@@ -8,7 +8,7 @@
       <p>Category: {{quiz.Category.name}}</p>
     </article>
   </section>
-  <EditQuiz :quiz="quizToEdit" v-else />
+  <EditQuiz :quizId="quizToEditId" v-else />
 </template>
 
 <script>
@@ -17,19 +17,20 @@ export default {
   components: {EditQuiz},
   data(){return{
     edit: false,
-    quizToEdit: {}
+    quizToEditId: Number
   }},
-  methods: {
-    editQuiz(quiz){
-      this.quizToEdit = quiz
-      this.edit = true
-    }
-  },
   computed: {
     userQuizzes(){
       return this.$store.getters.userQuizzes
+    },
+  },
+  methods: {
+    async editQuiz(quizId){
+      await this.$store.dispatch('getQuizQuestions', quizId)
+      this.quizToEditId = quizId
+      this.edit = true
     }
-  }
+  },
 }
 </script>
 

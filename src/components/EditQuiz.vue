@@ -1,7 +1,8 @@
 <template>
-  <section v-if="quiz">
+  <section v-if="!loading && quiz">
     <h2>{{quiz.name}}</h2>
-    <form @click.prevent="update" class="edit" v-if="edit" ref=edit>
+    <p v-if="message" class="success">{{message}}. Changes will update soon.</p>
+    <form @submit.prevent="update" v-if="edit" class="edit" ref="edit">
       <label for="question">Question:</label>
       <input v-model="question" type="text" name="question" :placeholder="questionToEdit.question">
       <label for="right-answer">Right answer</label>
@@ -29,7 +30,7 @@
 
 <script>
 export default {
-  props: {quiz: Object},
+  props: {quizId: Number},
   data(){return{
     questionToEdit: {},
     edit: false,
@@ -43,7 +44,7 @@ export default {
     editQuestion(question){
       this.questionToEdit = question
       this.edit = true
-      this.$refs.edit.scrollIntoView({ behavior: 'smooth' });
+      window.scrollTo({top: 0, left: 0, behavior: 'smooth'})
     },
     async update(){
       if(this.question.length < 1){
@@ -68,16 +69,28 @@ export default {
         answer3: this.answer3,
         answer4: this.answer4
       }
+      this.edit = false
       this.$store.dispatch('updateQuestion', {id: this.questionToEdit.id, question})
     }
   },
-  async mounted(){
-    await this.$store.dispatch('getQuizQuestions', this.quiz.id)
-  },
+  computed:{
+    quiz(){
+      return this.$store.state.quizzes[this.quizId]
+    },
+    loading(){
+      return this.$store.state.quizLoading
+    },
+    message(){
+      return this.$store.state.message
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
+.success{
+  color: green;
+}
 .edit{
   display: flex;
   flex-direction: column;
