@@ -19,7 +19,7 @@ export default {
 *{
   box-sizing: border-box;
 }
-html, body, h1, h2{
+html, body, h1, h2, h4{
   margin: 0;
   padding: 0;
 }

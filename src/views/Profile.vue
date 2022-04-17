@@ -6,7 +6,7 @@
     <a @click="view = 'updateQuiz'">update Quiz</a>
   </nav>
   <CreateQuiz v-if="view == 'createQuiz'" />
-  <UpdateQuiz :quizzes="userQuizzes" v-if="view == 'updateQuiz'"/>
+  <UpdateQuiz v-if="view == 'updateQuiz'"/>
 </main>
 </template>
 
@@ -22,12 +22,6 @@ export default {
   data(){return{
     view: 'createQuiz'
   }},
-  computed: {
-    userQuizzes(){
-      return this.$store.state.user.quiz
-    }
-  }
-
 }
 </script>
 

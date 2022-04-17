@@ -19,6 +19,10 @@ function addQuizId(questions, quizId){
   })
 }
 
+export function updateQuestion({id, question}){
+  console.log(id, question);
+}
+
 export async function sendQuiz({quizInfo, quizImage, quizQuestions}){
   const quiz = await sendQuizInfo(quizInfo)
   await sendQuizImage(quizImage) 

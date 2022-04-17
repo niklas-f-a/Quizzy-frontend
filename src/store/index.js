@@ -9,7 +9,6 @@ export default new Vuex.Store({
   state: {
     user: {
       info: {},
-      quiz: [],
       authenticated: false, 
     }, 
     categories: [],
@@ -31,7 +30,8 @@ export default new Vuex.Store({
     storeCategories(state, categories){
       state.categories = categories
     },
-    storeQuizCategory(state, quizzes){
+    storeQuiz(state, quizzes){
+      console.log(quizzes);
       quizzes.forEach(quiz => {
         if(!state.quizzes[quiz.id]){
           state.quizList.push(quiz)
@@ -40,14 +40,12 @@ export default new Vuex.Store({
       });
     },
     storeQuestions(state, questions){
+      console.log(questions);
       state.quizzes[questions[0].QuizId]['questions'] = questions
       state.quizLoading = false
     }, 
     storeUser(state, user){
       state.user.info = user
-    },
-    storeUserQuiz(state, quizzes){
-      state.user.quiz = quizzes
     },
     logOut(state){
       state.user.info = {}
@@ -56,6 +54,10 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    updateQuestion({commit}, question){
+      API.updateQuestion(question)
+      commit
+    },
     sendQuiz({state}, quiz){
       state.quizLoading = true
       API.sendQuiz(quiz)
@@ -80,7 +82,7 @@ export default new Vuex.Store({
     getQuizzes({commit},catId){
       API.getQuizzes(catId)
       .then(res => {
-        commit('storeQuizCategory', res.data)
+        commit('storeQuiz', res.data)
       })
       
     },
@@ -117,6 +119,7 @@ export default new Vuex.Store({
       })
     }, 
     getQuizQuestions({commit, state}, id){
+      console.log(id);
       state.quizLoading = true
       API.getQuizQuestions(id)
       .then(res => commit('storeQuestions', res.data))
@@ -125,7 +128,7 @@ export default new Vuex.Store({
       API.getMe()
       .then(res => commit('storeUser', res.data))
       .then(() => API.getMyQuizzes(state.user.info.id))
-      .then(res => commit('storeUserQuiz', res.data))
+      .then(res => commit('storeQuiz', res.data))
     },
     logOut({commit}){
       API.clearHeader()
@@ -146,5 +149,8 @@ export default new Vuex.Store({
     mixCategory(state){
       return state.quizList.filter(quiz => quiz.CategoryId == 4)
     }, 
+    userQuizzes(state){
+      return state.quizList.filter(quiz => quiz.userId == state.user.info.id)
+    }
   }
 })
