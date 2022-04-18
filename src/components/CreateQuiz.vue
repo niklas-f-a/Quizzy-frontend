@@ -139,7 +139,10 @@ export default {
       }else{
         this.error.image = ''
       }
-      if(this.$refs.imgField.files[0] && this.quizName.length >= this.requiredQuizNameLength){
+      if(this.$refs.imgField.files[0].size > 2097152){
+        this.error.image = 'Imagefile is too big, Please choose another one'
+      }
+      if(this.$refs.imgField.files[0] && !this.error.image.length && this.quizName.length >= this.requiredQuizNameLength){
         this.quizInfo = {
           CategoryId: this.category,
           name: this.quizName, 

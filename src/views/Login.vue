@@ -125,16 +125,17 @@ export default {
       transform: translateY(3rem);
       margin: 0 5rem;
       border-radius: 10px;
-      display: none;
+      opacity: 0;
+      transition: opacity .7s;
     }
     .login-form.open, .signup-form.open{
-      display: block;
+      opacity: 1;
     }
    .signup-form{
-     transform: translate(12rem, 1rem);
+     transform: translateY(1rem);
    }
    .login-form{
-     transform: translate(-12rem, 1rem);
+     transform: translateY(1rem);
    }
    form{
      display: flex;
