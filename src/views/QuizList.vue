@@ -11,7 +11,6 @@
           <img :src="`http://localhost:5001/images/${quiz.imgFile}`">
         </figure>
         <h3>{{quiz.name}}</h3>
-
       </article>
     </section>
   </main>
@@ -61,8 +60,8 @@ section{
   place-items: center;
   article{
     margin: 3rem 1rem 0 1rem;
-    height: 15rem;
     width: 15rem;
+    height: 20rem;
     border-radius: 10px;
     transition: transform .2s ease-in-out;
     &:hover{
@@ -72,10 +71,13 @@ section{
     figure{
       margin: 0;
       width: 100%;
+      height: 70%;
       img{
         border-radius: 10px 10px 0 0;
+        display: block;
         max-width: 100%;
         max-height: 100%;
+        margin: auto;
       }
     }
     h3{

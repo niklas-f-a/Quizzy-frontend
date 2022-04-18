@@ -75,10 +75,10 @@ export default {
   },
   computed:{
     quiz(){
-      return this.$store.state.quizzes[this.quizId]
+      return this.$store.state.quiz.quizzes[this.quizId]
     },
     loading(){
-      return this.$store.state.quizLoading
+      return this.$store.state.quiz.loading
     },
     message(){
       return this.$store.state.message

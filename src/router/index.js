@@ -4,9 +4,9 @@ import store from '@/store'
 
 import Login from '../views/Login.vue'
 import Categories from '../views/Categories.vue'
-import QuizView from '../views/QuizView.vue'
+import QuizList from '../views/QuizList.vue'
 import Quiz from '../views/Quiz.vue'
-import Profile from '../views/Profile.vue'
+import CreateUpdate from '../views/CreateUpdate.vue'
 
 
 
@@ -33,12 +33,12 @@ const routes = [
   {
     path: '/categories/:catId',
     name: 'Quizzes',
-    component: QuizView
+    component: QuizList
   }, 
   {
     path: '/profile', 
     name: 'Profile',
-    component: Profile,
+    component: CreateUpdate,
   },
   {
     path: '/quiz/:id',

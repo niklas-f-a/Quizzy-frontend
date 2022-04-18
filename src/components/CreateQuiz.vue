@@ -156,7 +156,7 @@ export default {
       return this.$store.state.categories
     }, 
     loading(){
-      return this.$store.state.quizLoading
+      return this.$store.state.loading
     }
   }
 }

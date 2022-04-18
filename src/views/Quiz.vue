@@ -78,10 +78,10 @@ export default {
   },
   computed: {
     loading(){
-      return this.$store.state.quizLoading
+      return this.$store.state.quiz.loading
     },
     quiz(){
-      return this.$store.state.quizzes[this.$route.params.id]
+      return this.$store.state.quiz.quizzes[this.$route.params.id]
     }, 
     question(){
       return this.quiz.questions[this.questionIteration]
