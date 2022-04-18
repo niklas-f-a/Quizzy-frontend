@@ -18,6 +18,12 @@ export default {
         }
       });
     },
+    updateQuestion(state, {quizId, questionId, updatedQuestion}){
+      const index = state.quizzes[quizId].questions.findIndex(question => question.id == questionId)
+      console.log(index);
+      state.quizzes[quizId].questions[index] = updatedQuestion
+      console.log(state.quizzes[quizId].questions[index]);
+    },
     storeQuestions(state, questions){
       state.quizzes[questions[0].QuizId]['questions'] = questions
       state.loading = false
@@ -30,6 +36,12 @@ export default {
     updateQuestion({commit}, question){
       API.QUIZ.updateQuestion(question)
       .then(res => commit('setMessage', res.message))
+      .then(() => commit('updateQuestion', question))
+      .then(() => {
+        setTimeout(() => {
+          commit('removeMessage')
+        }, 3000);
+      })
     },
     sendQuiz({commit}, quiz){
       commit('toggleLoading')

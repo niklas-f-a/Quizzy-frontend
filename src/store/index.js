@@ -17,6 +17,9 @@ export default new Vuex.Store({
     setMessage(state, message){
       state.message = message
     },
+    removeMessage(state){
+      state.message = ''
+    },
     removeErrorMessage(state){
       state.errorMessage = ''
     },
@@ -32,6 +35,9 @@ export default new Vuex.Store({
       API.QUIZ.sendScore(payload)
     },
     removeErrorMessage({commit}){
+      commit('removeErrorMessage')
+    },
+    removeMessage({commit}){
       commit('removeErrorMessage')
     },
     getCategories({commit}){

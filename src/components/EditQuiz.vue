@@ -62,7 +62,7 @@ export default {
       if(this.answer4.length < 1){
         this.answer4 = this.questionToEdit.answer4
       }
-      const question = {
+      const updatedQuestion = {
         question: this.question,
         rightAnswer: this.rightAnswer,
         answer2: this.answer2,
@@ -70,7 +70,7 @@ export default {
         answer4: this.answer4
       }
       this.edit = false
-      this.$store.dispatch('updateQuestion', {id: this.questionToEdit.id, question})
+      this.$store.dispatch('updateQuestion', {questionId: this.questionToEdit.id, updatedQuestion, quizId: this.quizId})
     }
   },
   computed:{

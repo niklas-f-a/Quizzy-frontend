@@ -4,11 +4,11 @@ const BASE_URL = process.env.VUE_APP_BASE_URL+'/api'
 
 
 
-export function updateQuestion({id, question}){
-  return fetch(BASE_URL+'/quizzes/question/'+id, {
+export function updateQuestion({questionId, updatedQuestion}){
+  return fetch(BASE_URL+'/quizzes/question/'+questionId, {
     method: 'PATCH',
     headers: myHeaders,
-    body: JSON.stringify(question)
+    body: JSON.stringify(updatedQuestion)
   })
   .then(res => res.json())
 }
