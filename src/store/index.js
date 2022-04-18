@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import * as API from '@/API/API.js'
+import * as API from '@/API'
 import user from './modules/user.js'
 import quiz from './modules/quiz.js'
 
@@ -29,13 +29,13 @@ export default new Vuex.Store({
   },
   actions: {
     sendScore(_, payload){
-      API.sendScore(payload)
+      API.QUIZ.sendScore(payload)
     },
     removeErrorMessage({commit}){
       commit('removeErrorMessage')
     },
     getCategories({commit}){
-      API.getCategories()
+      API.QUIZ.getCategories()
       .then(data => {
         commit('storeCategories', data)
       })

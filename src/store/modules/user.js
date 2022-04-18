@@ -1,4 +1,4 @@
-import * as API from '@/API/API'
+import * as API from '@/API'
 import router from '@/router'
 
 
@@ -23,7 +23,7 @@ export default{
   },
   actions: {
     hasUserTakenQuiz({commit}, {id, categoryName}){
-      API.hasUserTakenQuiz(id)
+      API.USER.hasUserTakenQuiz(id)
       .then(data => {
         if(data == true){
           commit('setError', 'You have already taken this quiz')
@@ -34,7 +34,7 @@ export default{
       })
     },
     registerUser({commit}, credentials){
-      API.registerUser(credentials)
+      API.USER.registerUser(credentials)
       .then(data => {
         commit('registerAuth', true)
         API.storeToken(data.token)
@@ -45,7 +45,7 @@ export default{
       })
     },
     login({commit}, credentials){
-      API.login(credentials)
+      API.USER.login(credentials)
       .then((data) => {
         if(data.error){
           commit('setError', data.error)
@@ -65,9 +65,9 @@ export default{
       router.push('/')
     },
     getMe({state, commit}){
-      API.getMe()
+      API.USER.getMe()
       .then(res => commit('storeUser', res.data))
-      .then(() => API.getMyQuizzes(state.info.id))
+      .then(() => API.USER.getMyQuizzes(state.info.id))
       .then(res => commit('storeQuiz', res.data))
     },
   }

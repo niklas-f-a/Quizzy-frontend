@@ -2,7 +2,7 @@
   <section v-if="!edit">
     <article @click="editQuiz(quiz.id)" v-for="quiz in userQuizzes" :key="quiz.id">
       <figure>
-        <img :src="`http://localhost:5001/images/${quiz.imgFile}`">
+        <img :src="`${BASE_URL}/images/${quiz.imgFile}`">
       </figure>
       <h3>Name: {{quiz.name}}</h3>
       <p>Category: {{quiz.Category.name}}</p>
@@ -16,13 +16,14 @@ import EditQuiz from '@/components/EditQuiz.vue';
 export default {
   components: {EditQuiz},
   data(){return{
+    BASE_URL: process.env.VUE_APP_BASE_URL,
     edit: false,
     quizToEditId: Number
   }},
   computed: {
     userQuizzes(){
       return this.$store.getters.userQuizzes
-    },
+    }
   },
   methods: {
     async editQuiz(quizId){

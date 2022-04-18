@@ -7,7 +7,7 @@
       <article v-if="guessing && !done">
         <h2>{{quiz.name}}</h2>
         <figure>
-          <img :src="`http://localhost:5001/images/${quiz.imgFile}`">
+          <img :src="`${BASE_URL}/images/${quiz.imgFile}`">
         </figure>
         <h3>{{question.question}}?</h3>
         <ul v-for="(answer, index) in shuffledAnswers" :key="index">
@@ -19,7 +19,7 @@
       <article v-else-if="!guessing && !done">
         <h2>{{quiz.name}}</h2>
         <figure>
-          <img :src="`http://localhost:5001/images/${quiz.imgFile}`">
+          <img :src="`${BASE_URL}/images/${quiz.imgFile}`">
         </figure>
         <h3>{{question.question}}?</h3>
         <h3 v-if="isRight">Congratulations</h3>
@@ -43,6 +43,7 @@ import Header from '@/components/Header'
 export default {
   components: {Header},
   data(){return{
+    BASE_URL: process.env.VUE_APP_BASE_URL,
     questionIteration: 0,
     picked: Boolean, 
     guessing: true,

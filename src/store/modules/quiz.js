@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import * as API from '@/API/API'
+import * as API from '@/API'
 
 
 
@@ -28,22 +28,22 @@ export default {
   },
   actions: {
     updateQuestion({commit}, question){
-      API.updateQuestion(question)
+      API.QUIZ.updateQuestion(question)
       .then(res => commit('setMessage', res.message))
     },
     sendQuiz({commit}, quiz){
       commit('toggleLoading')
-      API.sendQuiz(quiz)
+      API.QUIZ.sendQuiz(quiz)
     },
     getQuizzes({commit},catId){
-      API.getQuizzes(catId)
+      API.QUIZ.getQuizzes(catId)
       .then(res => {
         commit('storeQuiz', res.data)
       })
     },
     getQuizQuestions({commit}, id){
       commit('toggleLoading')
-      API.getQuizQuestions(id)
+      API.QUIZ.getQuizQuestions(id)
       .then(res => commit('storeQuestions', res.data))
     }
   }

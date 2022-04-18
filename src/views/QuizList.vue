@@ -8,7 +8,7 @@
         @click="hasUserTakenQuiz(quiz.id, $route.query.name)"
       >
         <figure>
-          <img :src="`http://localhost:5001/images/${quiz.imgFile}`">
+          <img :src="`${BASE_URL}/images/${quiz.imgFile}`">
         </figure>
         <h3>{{quiz.name}}</h3>
       </article>
@@ -24,6 +24,7 @@ export default {
   },
   components: {Header},
   data(){return{
+    BASE_URL: process.env.VUE_APP_BASE_URL,
   }},
   computed: {
     quizzes(){
