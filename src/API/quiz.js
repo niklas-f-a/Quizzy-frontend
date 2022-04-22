@@ -65,7 +65,7 @@ export function getCategories(){
   .then(res => res.json())
 }
 
-export function getQuizzes({catId, page = 1, pageSize = 4}){
+export function getQuizzes({catId, page = 1, pageSize = 8}){
   console.log(catId, page, pageSize);
   return fetch(`${BASE_URL}/quizzes/categories/${catId}?page=${page}&pageSize=${pageSize}`, {
     method: 'GET',
