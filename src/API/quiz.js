@@ -15,7 +15,7 @@ export function updateQuestion({questionId, updatedQuestion}){
 
 export async function sendQuiz({quizInfo, quizImage, quizQuestions}){
   const quiz = await sendQuizInfo(quizInfo)
-  await sendQuizImage(quizImage) 
+  await sendQuizImage(quizImage)
   addQuizId(quizQuestions, quiz.data.id)
   await sendQuizQuestions(quizQuestions)
 }
@@ -38,7 +38,7 @@ function sendQuizQuestions(quizQuestions){
 function sendQuizInfo(quizInfo){
   return fetch(BASE_URL+'/quizzes', {
     method: 'POST',
-    headers: myHeaders, 
+    headers: myHeaders,
     body: JSON.stringify(quizInfo)
   })
   .then(res => res.json())
@@ -65,8 +65,9 @@ export function getCategories(){
   .then(res => res.json())
 }
 
-export function getQuizzes(catId){
-  return fetch(BASE_URL+'/quizzes/categories/'+catId, {
+export function getQuizzes({catId, page = 1, pageSize = 4}){
+  console.log(catId, page, pageSize);
+  return fetch(`${BASE_URL}/quizzes/categories/${catId}?page=${page}&pageSize=${pageSize}`, {
     method: 'GET',
     headers: myHeaders
   })

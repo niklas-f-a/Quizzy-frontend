@@ -2,16 +2,19 @@
   <main>
     <Header :cat='$route.query.name' />
     <section>
-      <article v-for="quiz in quizzes" :key="quiz.id"
-        :class="{green: $route.query.name == 'nature', blue: $route.query.name == 'music',
-          red: $route.query.name == 'movie', yellow: $route.query.name == 'mix'}"
-        @click="hasUserTakenQuiz(quiz.id, $route.query.name)"
-      >
-        <figure>
-          <img :src="`${BASE_URL}/images/${quiz.imgFile}`">
-        </figure>
-        <h3>{{quiz.name}}</h3>
-      </article>
+      <div class="container">
+        <article v-for="quiz in quizzes" :key="quiz.id"
+          :class="{green: $route.query.name == 'nature', blue: $route.query.name == 'music',
+            red: $route.query.name == 'movie', yellow: $route.query.name == 'mix'}"
+          @click="hasUserTakenQuiz(quiz.id, $route.query.name)"
+        >
+          <figure>
+            <img :src="`${BASE_URL}/images/${quiz.imgFile}`">
+          </figure>
+          <h3>{{quiz.name}}</h3>
+        </article>
+      </div>
+      <button @click="loadMoreQuizzes" class="regular-button">Load more quizzes</button>
     </section>
   </main>
 </template>
@@ -39,15 +42,35 @@ export default {
       }
       if(this.$route.query.name == 'mix'){
         return this.$store.getters.mixCategory
+      }else return null
+    },
+    currentPage(){
+      return this.$store.state.quiz.currentPage
+    },
+    maxPages(){
+      if(this.$route.query.name == 'music'){
+        return this.$store.getters.maxMusicPages
       }
-   
-      else return null
+      if(this.$route.query.name == 'nature'){
+        return this.$store.getters.maxNaturePages
+      }
+      if(this.$route.query.name == 'movie'){
+        return this.$store.getters.maxMoviePages
+      }
+      if(this.$route.query.name == 'mix'){
+        return this.$store.getters.maxMixPages
+      }else{
+        return null
+      }
     }
   },
   methods: {
     async hasUserTakenQuiz(id, categoryName){
       await this.$store.dispatch('hasUserTakenQuiz', {id, categoryName})
-    }
+    },
+    loadMoreQuizzes(){
+      this.$store.dispatch('increasePageCounter', {maxPages: this.maxPages, catId: this.$route.params.catId})
+    },
   }
 }
 </script>
@@ -55,14 +78,32 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/styles/fonts-colours.scss';
 section{
-  padding: 0 5rem;
+  display: flex;
+  flex-direction: column;
+  button{
+    margin-top: 2rem;
+    align-self: center;
+  }
+  nav{
+    align-self: center;
+    display: flex;
+    align-items: center;
+    p{
+      margin: .6rem;
+    }
+    a:last-child{
+      transform: rotate(180deg);
+    }
+  }
+}
+.container{
+  padding: 0 12rem;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  place-items: center;
+  grid-auto-rows: 20rem;
   article{
     margin: 3rem 1rem 0 1rem;
     width: 15rem;
-    height: 20rem;
     border-radius: 10px;
     transition: transform .2s ease-in-out;
     &:hover{

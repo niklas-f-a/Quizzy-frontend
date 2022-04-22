@@ -6,8 +6,16 @@ import * as API from '@/API'
 export default {
   state: {
     quizzes: {},
-    quizList: [], 
-    loading: false
+    quizList: [],
+    loading: false,
+    quizPerPage: 8,
+    currentPage: 1,
+    maxQuizCount: {
+      music: null,
+      movie: null,
+      nature: null,
+      mix: null
+    }
   },
   mutations: {
     storeQuiz(state, quizzes){
@@ -20,7 +28,6 @@ export default {
     },
     updateQuestion(state, {quizId, questionId, updatedQuestion}){
       const index = state.quizzes[quizId].questions.findIndex(question => question.id == questionId)
-      console.log(index);
       state.quizzes[quizId].questions[index] = updatedQuestion
       console.log(state.quizzes[quizId].questions[index]);
     },
@@ -30,9 +37,21 @@ export default {
     },
     toggleLoading(state){
       state.loading = !state.loading
-    }
+    },
+    setMaxQuizCount(state, {maxCount, category}){
+      state.maxQuizCount[category] = maxCount
+    },
+    increaseCurrentPage(state){
+      state.currentPage++
+    },
   },
   actions: {
+    increasePageCounter({commit, state, dispatch}, {catId, maxPages}){
+      if(state.currentPage < maxPages){
+        commit('increaseCurrentPage', catId)
+        dispatch('getQuizzes', (catId))
+      }
+    },
     updateQuestion({commit}, question){
       API.QUIZ.updateQuestion(question)
       .then(res => commit('setMessage', res.message))
@@ -47,9 +66,11 @@ export default {
       commit('toggleLoading')
       API.QUIZ.sendQuiz(quiz)
     },
-    getQuizzes({commit},catId){
-      API.QUIZ.getQuizzes(catId)
+    getQuizzes({commit, state},catId){
+      API.QUIZ.getQuizzes({catId, page: state.currentPage})
       .then(res => {
+        console.log(res);
+        commit('setMaxQuizCount', {maxCount: res.categoryCount.counts, category: res.data[0].Category.name})
         commit('storeQuiz', res.data)
       })
     },
@@ -57,6 +78,20 @@ export default {
       commit('toggleLoading')
       API.QUIZ.getQuizQuestions(id)
       .then(res => commit('storeQuestions', res.data))
+    }
+  },
+  getters: {
+    maxMusicPages(state){
+      return Math.ceil(state.maxQuizCount.music / state.quizPerPage)
+    },
+    maxNaturePages(state){
+      return Math.ceil(state.maxQuizCount.nature / state.quizPerPage)
+    },
+    maxMixPages(state){
+      return Math.ceil(state.maxQuizCount.mix / state.quizPerPage)
+    },
+    maxMoviePages(state){
+      return Math.ceil(state.maxQuizCount.movie / state.quizPerPage)
     }
   }
 }
